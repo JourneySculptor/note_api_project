@@ -1,0 +1,14 @@
+### Create a new note
+POST http://127.0.0.1:5000/notes
+Content-Type: application/json
+
+{
+    "title": "My First Note",
+    "content": "This is the content of my first note."
+}
+
+### Retrieve all notes
+GET http://127.0.0.1:5000/notes
+
+### Retrieve a specific note by ID
+GET http://127.0.0.1:5000/notes/1
