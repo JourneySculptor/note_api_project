@@ -9,19 +9,6 @@ notes = []
 def create_note():
     """
     Create a new note.
-
-    Request body:
-    {
-        "title": "Note title",
-        "content": "Note content"
-    }
-
-    Response:
-    {
-        "id": 1,
-        "title": "Note title",
-        "content": "Note content"
-    }
     """
     data = request.get_json()
     new_note = {
@@ -36,17 +23,6 @@ def create_note():
 def get_notes():
     """
     Retrieve all notes.
-
-    Response:
-    {
-        "notes": [
-            {
-                "id": 1,
-                "title": "Note title",
-                "content": "Note content"
-            }
-        ]
-    }
     """
     return jsonify({"notes": notes}), 200
 
@@ -54,17 +30,22 @@ def get_notes():
 def get_note_by_id(note_id):
     """
     Retrieve a specific note by ID.
-
-    URL parameter:
-    - note_id: The ID of the note to retrieve.
-
-    Response:
-    - 200: If the note is found.
-    - 404: If the note is not found.
     """
     for note in notes:
         if note["id"] == note_id:
             return jsonify(note), 200
+    return jsonify({"message": "Note not found"}), 404
+
+@app.route('/notes/<int:note_id>', methods=['DELETE'])
+def delete_note_by_id(note_id):
+    """
+    Delete a specific note by ID.
+    """
+    global notes
+    for note in notes:
+        if note["id"] == note_id:
+            notes = [n for n in notes if n["id"] != note_id]
+            return jsonify({"message": "Note deleted successfully"}), 200
     return jsonify({"message": "Note not found"}), 404
 
 if __name__ == '__main__':
